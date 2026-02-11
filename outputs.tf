@@ -1,5 +1,5 @@
-output "data_factorys" {
+output "data_factories" {
   description = "All data_factory resources"
-  value       = azurerm_data_factory.data_factorys
+  value       = azurerm_data_factory.data_factories
 }
 

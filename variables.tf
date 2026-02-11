@@ -1,6 +1,6 @@
-variable "data_factorys" {
+variable "data_factories" {
   description = <<EOT
-Map of data_factorys, attributes below
+Map of data_factories, attributes below
 Required:
     - location
     - name
@@ -43,14 +43,14 @@ EOT
     customer_managed_key_id          = optional(string)
     customer_managed_key_identity_id = optional(string)
     managed_virtual_network_enabled  = optional(bool)
-    public_network_enabled           = optional(bool, true)
+    public_network_enabled           = optional(bool) # Default: true
     purview_id                       = optional(string)
     tags                             = optional(map(string))
     github_configuration = optional(object({
       account_name       = string
       branch_name        = string
       git_url            = optional(string)
-      publishing_enabled = optional(bool, true)
+      publishing_enabled = optional(bool) # Default: true
       repository_name    = string
       root_folder        = string
     }))
@@ -67,7 +67,7 @@ EOT
       account_name       = string
       branch_name        = string
       project_name       = string
-      publishing_enabled = optional(bool, true)
+      publishing_enabled = optional(bool) # Default: true
       repository_name    = string
       root_folder        = string
       tenant_id          = string

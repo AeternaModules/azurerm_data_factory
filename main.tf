@@ -1,5 +1,5 @@
-resource "azurerm_data_factory" "data_factorys" {
-  for_each = var.data_factorys
+resource "azurerm_data_factory" "data_factories" {
+  for_each = var.data_factories
 
   location                         = each.value.location
   name                             = each.value.name
