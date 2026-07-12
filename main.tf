@@ -24,7 +24,7 @@ resource "azurerm_data_factory" "data_factories" {
   }
 
   dynamic "global_parameter" {
-    for_each = each.value.global_parameter != null ? [each.value.global_parameter] : []
+    for_each = each.value.global_parameter != null ? each.value.global_parameter : []
     content {
       name  = global_parameter.value.name
       type  = global_parameter.value.type

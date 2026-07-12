@@ -54,11 +54,11 @@ EOT
       repository_name    = string
       root_folder        = string
     }))
-    global_parameter = optional(object({
+    global_parameter = optional(list(object({
       name  = string
       type  = string
       value = string
-    }))
+    })))
     identity = optional(object({
       identity_ids = optional(set(string))
       type         = string
@@ -73,102 +73,6 @@ EOT
       tenant_id          = string
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.github_configuration == null || (length(v.github_configuration.account_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.github_configuration == null || (length(v.github_configuration.branch_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.github_configuration == null || (length(v.github_configuration.repository_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.github_configuration == null || (length(v.github_configuration.root_folder) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.vsts_configuration == null || (length(v.vsts_configuration.account_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.vsts_configuration == null || (length(v.vsts_configuration.branch_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.vsts_configuration == null || (length(v.vsts_configuration.project_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.vsts_configuration == null || (length(v.vsts_configuration.repository_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.vsts_configuration == null || (length(v.vsts_configuration.root_folder) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.vsts_configuration == null || (can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", v.vsts_configuration.tenant_id)))
-      )
-    ])
-    error_message = "must be a valid UUID"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.global_parameter == null || (length(v.global_parameter.name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factories : (
-        v.global_parameter == null || (length(v.global_parameter.value) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_data_factory's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -197,8 +101,44 @@ EOT
   #   source:    [from commonids.ValidateUserAssignedIdentityID] !ok
   # path: identity.identity_ids[*]
   #   source:    [from commonids.ValidateUserAssignedIdentityID] err != nil
+  # path: github_configuration.account_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: github_configuration.branch_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: github_configuration.repository_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: github_configuration.root_folder
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: vsts_configuration.account_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: vsts_configuration.branch_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: vsts_configuration.project_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: vsts_configuration.repository_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: vsts_configuration.root_folder
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: vsts_configuration.tenant_id
+  #   condition: can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", value))
+  #   message:   must be a valid UUID
+  # path: global_parameter.name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: global_parameter.type
   #   source:    validation.StringInSlice value list is not a literal []string - likely a generated PossibleValuesFor*() helper; resolve separately
+  # path: global_parameter.value
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: purview_id
   #   source:    [from account.ValidateAccountID] !ok
   # path: purview_id
