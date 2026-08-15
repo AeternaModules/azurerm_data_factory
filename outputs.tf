@@ -12,7 +12,7 @@ output "data_factories_customer_managed_key_identity_id" {
 }
 output "data_factories_github_configuration" {
   description = "Map of github_configuration values across all data_factories, keyed the same as var.data_factories"
-  value       = { for k, v in azurerm_data_factory.data_factories : k => v.github_configuration if v.github_configuration != null && length(v.github_configuration) > 0 }
+  value       = { for k, v in azurerm_data_factory.data_factories : k => one(v.github_configuration) if v.github_configuration != null && length(v.github_configuration) > 0 }
 }
 output "data_factories_global_parameter" {
   description = "Map of global_parameter values across all data_factories, keyed the same as var.data_factories"
@@ -20,7 +20,7 @@ output "data_factories_global_parameter" {
 }
 output "data_factories_identity" {
   description = "Map of identity values across all data_factories, keyed the same as var.data_factories"
-  value       = { for k, v in azurerm_data_factory.data_factories : k => v.identity if v.identity != null && length(v.identity) > 0 }
+  value       = { for k, v in azurerm_data_factory.data_factories : k => one(v.identity) if v.identity != null && length(v.identity) > 0 }
 }
 output "data_factories_location" {
   description = "Map of location values across all data_factories, keyed the same as var.data_factories"
@@ -52,6 +52,6 @@ output "data_factories_tags" {
 }
 output "data_factories_vsts_configuration" {
   description = "Map of vsts_configuration values across all data_factories, keyed the same as var.data_factories"
-  value       = { for k, v in azurerm_data_factory.data_factories : k => v.vsts_configuration if v.vsts_configuration != null && length(v.vsts_configuration) > 0 }
+  value       = { for k, v in azurerm_data_factory.data_factories : k => one(v.vsts_configuration) if v.vsts_configuration != null && length(v.vsts_configuration) > 0 }
 }
 
